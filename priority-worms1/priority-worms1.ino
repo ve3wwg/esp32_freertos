@@ -154,6 +154,7 @@ static InchWorm worm1(oled,1);
 static InchWorm worm2(oled,2);
 static InchWorm worm3(oled,3);
 static QueueHandle_t qh = 0;
+static int app_cpu = 0; // Updated by setup()
 
 void worm_task(void *arg) {
   InchWorm *worm = (InchWorm*)arg;
@@ -169,6 +170,7 @@ void worm_task(void *arg) {
 void setup() {
   TaskHandle_t h = xTaskGetCurrentTaskHandle();
 
+  app_cpu = xPortGetCoreID(); // Which CPU?
   oled.init();
   vTaskPrioritySet(h,MAIN_TASK_PRIORITY); 
   qh = xQueueCreate(4,sizeof(InchWorm*));
@@ -185,7 +187,7 @@ void setup() {
     &worm1,     // Argument
     WORM1_TASK_PRIORITY,
     nullptr,    // No handle returned
-    1);         // CPU 1
+    app_cpu);
     
   xTaskCreatePinnedToCore(
     worm_task,  // Function
@@ -194,7 +196,7 @@ void setup() {
     &worm2,     // Argument
     WORM2_TASK_PRIORITY,
     nullptr,    // No handle returned
-    1);         // CPU 1
+    app_cpu);
 
   xTaskCreatePinnedToCore(
     worm_task,  // Function
@@ -203,7 +205,9 @@ void setup() {
     &worm3,     // Argument
     WORM3_TASK_PRIORITY,
     nullptr,    // No handle returned
-    1);         // CPU 1
+    app_cpu);
+
+  printf("Running on CPU %d\n",app_cpu);
 }
 
 void loop() {
