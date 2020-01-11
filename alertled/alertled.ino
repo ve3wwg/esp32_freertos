@@ -85,10 +85,10 @@ void AlertLED::callback(TimerHandle_t th) {
 
   if ( ++obj->count >= 5 * 2 ) {
     obj->reset(true);
-    xTimerChangePeriod(th,obj->period_ms/20,portMAX_DELAY);
+    xTimerChangePeriod(th,pdMS_TO_TICKS(obj->period_ms/20),portMAX_DELAY);
   } else if ( obj->count == 5 * 2 - 1 ) {
     xTimerChangePeriod(th,
-      obj->period_ms/20+obj->period_ms/2,
+      pdMS_TO_TICKS(obj->period_ms/20+obj->period_ms/2),
       portMAX_DELAY);
     assert(!obj->state);
   }
