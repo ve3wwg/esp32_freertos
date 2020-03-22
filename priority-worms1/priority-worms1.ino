@@ -130,8 +130,8 @@ Display::Display(
   int addr,
   int sda,
   int scl)
-: w(width), h(height),
-  SSD1306(addr,sda,scl) {
+: SSD1306(addr,sda,scl),
+  w(width), h(height) {
 }
 
 void
