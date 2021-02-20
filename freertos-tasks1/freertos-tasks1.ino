@@ -47,7 +47,7 @@
 #define CFG_LED_GPIO        13
 
 #if CFG_OLED
-#include "SSD1306.h"
+#include "SSD1306.h" // library named "ESP8266_and_ESP32_OLED_driver_for_SSD1306_displays" by ThingPulse, Fabrice Weinberg, Version 4.1.0
 
 SSD1306 display(CFG_OLED_ADDRESS,CFG_OLED_SDA,CFG_OLED_SCL);
 
